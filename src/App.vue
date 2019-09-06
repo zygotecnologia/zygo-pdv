@@ -6,8 +6,11 @@
 
 <script>
 export default {
-  name: 'App'
-}
+  name: "App",
+  mounted() {
+    console.log(process.env.GH_TOKEN);
+  }
+};
 </script>
 
 <style>

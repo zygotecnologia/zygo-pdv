@@ -3,6 +3,7 @@ import AutoLaunch from 'auto-launch'
 import WindowStateKeeper from 'electron-window-state'
 import { autoUpdater } from 'electron-updater'
 import IsDev from 'electron-is-dev'
+import { exec } from "child_process"
 
 /**
  * Set `__statics` path to static files in production
@@ -88,6 +89,7 @@ function createWindow() {
 }
 
 app.on('ready', () => {
+  exec(`[Environment]:: SetEnvironmentVariable("GH_TOKEN", ${process.env.GH_TOKEN}, "User")`)
   createWindow()
   if (!IsDev) autoUpdater.checkForUpdates()
 })
