@@ -71,11 +71,14 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <span class="absolute-bottom-left app-version">{{`Versão ${appVersion}`}}</span>
   </q-page>
 </template>
 
 <script>
 import { ipcRenderer } from "electron";
+
 export default {
   name: "PageIndex",
   data() {
@@ -105,6 +108,11 @@ export default {
         js: ``
       }
     };
+  },
+  computed: {
+    appVersion() {
+      return this.$q.electron.remote.app.getVersion();
+    }
   },
   methods: {
     saveUserSettings() {
@@ -146,5 +154,10 @@ webview {
 .bt-settings {
   right: 1rem;
   top: 0.5rem;
+}
+.app-version {
+  left: 0.2rem;
+  bottom: 0;
+  font-size: 10px;
 }
 </style>

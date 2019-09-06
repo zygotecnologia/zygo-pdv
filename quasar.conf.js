@@ -138,7 +138,7 @@ module.exports = function (ctx) {
     },
 
     electron: {
-      // bundler: 'builder', // or 'packager'
+      bundler: 'builder', // or 'packager'
 
       extendWebpack(cfg) {
         // do something with Electron main process Webpack cfg
@@ -159,9 +159,15 @@ module.exports = function (ctx) {
       },
 
       builder: {
-        // https://www.electron.build/configuration/configuration
-
-        // appId: 'zygo-pdv'
+        appId: 'com.electron.zygopdv',
+        win: {
+          target: 'nsis'
+        },
+        publish: {
+          "provider": "github",
+          "owner": "nathanssantos",
+          "repo": "pdv"
+        }
       }
     }
   }
