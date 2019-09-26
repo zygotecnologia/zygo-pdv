@@ -164,9 +164,9 @@ module.exports = function (ctx) {
           target: 'nsis'
         },
         publish: {
-          "provider": "github",
-          "owner": "nathanssantos",
-          "repo": "pdv"
+          "provider": "s3",
+          "bucket": "zygopdv",
+          "acl": "public-read"
         }
       }
     }
