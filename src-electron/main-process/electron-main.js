@@ -91,7 +91,7 @@ function createWindow() {
 app.on('ready', () => {
   exec(`[Environment]:: SetEnvironmentVariable("GH_TOKEN", ${process.env.GH_TOKEN}, "User")`)
   createWindow()
-  if (!IsDev) autoUpdater.checkForUpdates()
+  if (!IsDev || true) autoUpdater.checkForUpdates()
 })
 
 
@@ -107,22 +107,24 @@ app.on('activate', () => {
 
 // NODE AUTO LAUNCH
 
-const APP_PATH = 'C:/Users/NathanW16/Desktop/zygo-pdv-electron/dist/electron/zygo-pdv-win32-x64/zygo-pdv.exe'
+if (!IsDev) {
+  const APP_PATH = 'C:/Users/NathanW16/Desktop/zygo-pdv-electron/dist/electron/zygo-pdv-win32-x64/zygo-pdv.exe'
 
-var electronAutoLaunch = new AutoLaunch({
-  name: 'ZygoPdv',
-  path: APP_PATH.replace(/\//g, '\\'),
-})
-
-ipcMain.on('setStartWithSystem', (event, arg) => arg ? electronAutoLaunch.enable() : electronAutoLaunch.disable())
-
+  var electronAutoLaunch = new AutoLaunch({
+    name: 'ZygoPdv',
+    path: APP_PATH.replace(/\//g, '\\'),
+  })
+  
+  ipcMain.on('setStartWithSystem', (event, arg) => arg ? electronAutoLaunch.enable() : electronAutoLaunch.disable())
+}
 
 
 // AUTO UPDATER
-
+//Channel is the way to GOOOOO
 autoUpdater.logger = require('electron-log')
 autoUpdater.logger.transports.file.level = 'info'
-
+autoUpdater.setFeedURL('https://zygopdv.s3.amazonaws.com/')
+autoUpdater.channel = "beta"
 autoUpdater.on('checking-for-update', () => console.log('Buscando atualizações...'))
 
 autoUpdater.on('update-available', (info) => {
@@ -140,5 +142,6 @@ autoUpdater.on('update-downloaded', (info) => {
   console.log('Atualização recebida')
   autoUpdater.quitAndInstall()
 })
+
 
 autoUpdater.on('error', (error) => console.log("ERRO: ", error))
