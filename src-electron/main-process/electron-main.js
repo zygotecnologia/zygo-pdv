@@ -151,12 +151,15 @@ autoUpdater.on('error', (error) => console.log("ERRO: ", error))
 ipcMain.on('store-code', (event, arg) => {
   console.log(arg[0])
   var options = { method: 'GET',
-  url: 'http://api.local.lvh.me:3000/v1/updater/' + arg}
+  url: 'https://api.zygotecnologia.com/v1/updater/' + arg}
 
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
     if (response.statusCode == 200) {
       var channel = JSON.parse(body)['channel'];
+      if (channel == "recovery") {
+        autoUpdater.allowDowngrade = true;
+      }
       autoUpdater.channel = channel;
       autoUpdater.checkForUpdates();
     }
