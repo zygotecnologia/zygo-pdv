@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <webview ref="zygoPdv" src="https://pdv.zygotecnologia.com/?embed=electron" />
+    <webview ref="zygoPdv" id="main-window" src="https://pdv.zygotecnologia.com/?embed=electron" nodeintegration />
     <q-btn dense icon="more_vert" flat class="bt-settings absolute-top-right">
       <q-menu style="min-width: 300px" transition-show="jump-down" transition-hide="jump-up">
         <q-list style="min-width: 300px">
@@ -105,7 +105,12 @@ export default {
         `,
 
         // JS INJETADO NA WEBVIEW
-        js: ``
+        js: `
+              const { ipcRenderer } = require('electron');
+              $( "#new_operator" ).submit(function( event ) { 
+                ipcRenderer.sendToHost('store-code', $('#operator_store_code').val()); 
+                });
+            `
       }
     };
   },
@@ -134,8 +139,14 @@ export default {
     webview.addEventListener("dom-ready", () => {
       webview.insertCSS(this.webview.css);
       webview.executeJavaScript(this.webview.js);
+      
     });
 
+    webview.addEventListener('ipc-message', (event) => {
+      console.log(event);
+      ipcRenderer.send(event.channel, event.args);
+    });
+    
     this.settings =
       JSON.parse(localStorage.getItem("zygo_pdv")) ||
       JSON.parse(JSON.stringify(this.defaultSettings));
@@ -143,6 +154,10 @@ export default {
     this.setStartWithSystem();
   }
 };
+
+
+console.log();
+
 </script>
 
 <style scoped>
