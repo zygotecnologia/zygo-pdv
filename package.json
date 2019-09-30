@@ -1,6 +1,6 @@
 {
   "name": "zygo-pdv",
-  "version": "1.0.0-beta",
+  "version": "1.0.1",
   "description": "A Quasar Framework app",
   "productName": "zygo-pdv",
   "cordovaId": "org.cordova.quasar.app",
@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "start": "quasar dev -m electron",
-    "build": "quasar build -m electron -P never",
+    "build": "quasar build -m electron -P always --target win32",
     "release": "quasar build -m electron -P always"
   },
   "dependencies": {
