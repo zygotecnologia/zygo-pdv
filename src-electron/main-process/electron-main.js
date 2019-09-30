@@ -4,6 +4,8 @@ import WindowStateKeeper from 'electron-window-state'
 import { autoUpdater } from 'electron-updater'
 import IsDev from 'electron-is-dev'
 import { exec } from "child_process"
+import { stream } from 'fast-glob'
+var request = require("request")
 
 /**
  * Set `__statics` path to static files in production
@@ -124,7 +126,7 @@ if (!IsDev) {
 autoUpdater.logger = require('electron-log')
 autoUpdater.logger.transports.file.level = 'info'
 autoUpdater.setFeedURL('https://zygopdv.s3.amazonaws.com/')
-autoUpdater.channel = "beta"
+autoUpdater.channel = "latest"
 autoUpdater.on('checking-for-update', () => console.log('Buscando atualizações...'))
 
 autoUpdater.on('update-available', (info) => {
@@ -145,3 +147,23 @@ autoUpdater.on('update-downloaded', (info) => {
 
 
 autoUpdater.on('error', (error) => console.log("ERRO: ", error))
+
+ipcMain.on('store-code', (event, arg) => {
+  console.log(arg[0])
+  var options = { method: 'GET',
+  url: 'http://api.local.lvh.me:3000/v1/updater/' + arg}
+
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+    if (response.statusCode == 200) {
+      var channel = JSON.parse(body)['channel'];
+      autoUpdater.channel = channel;
+      autoUpdater.checkForUpdates();
+    }
+    console.log(JSON.parse(body));
+
+  });
+})
+
+//const { ipcRenderer } = require('electron')
+//console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
