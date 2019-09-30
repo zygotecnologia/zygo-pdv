@@ -8,7 +8,8 @@
   "private": true,
   "scripts": {
     "start": "quasar dev -m electron",
-    "build": "quasar build -m electron -P always"
+    "build": "quasar build -m electron -P never",
+    "release": "quasar build -m electron -P always"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
