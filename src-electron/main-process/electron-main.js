@@ -4,7 +4,6 @@ import WindowStateKeeper from 'electron-window-state'
 import { autoUpdater } from 'electron-updater'
 import IsDev from 'electron-is-dev'
 import { exec } from "child_process"
-import { stream } from 'fast-glob'
 var request = require("request")
 
 /**
@@ -48,8 +47,6 @@ function createWindow() {
     mainWindow = null
     iconAlwaysOnTop.close()
   })
-
-
 
   // Secondary window options - Icon AlwaysOnTop
 
