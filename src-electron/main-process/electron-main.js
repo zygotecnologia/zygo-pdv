@@ -4,6 +4,7 @@ import WindowStateKeeper from 'electron-window-state'
 import { autoUpdater } from 'electron-updater'
 import IsDev from 'electron-is-dev'
 import { exec } from "child_process"
+const storage = require('electron-json-storage-sync');
 var request = require("request")
 
 /**
@@ -19,7 +20,13 @@ let mainWindow
 function createWindow() {
 
   // Primary window options
-
+  var pos = [30,30];
+  var data = storage.get('mainWindow');
+  if (data.status){
+    console.log(data);
+    pos = data.data['pos'];
+  }
+  
   mainWindow = new BrowserWindow({
     height: 588,
     minHeight: 588,
@@ -27,6 +34,8 @@ function createWindow() {
     width: 500,
     minWidth: 500,
     maxWidth: 500,
+    x: pos[0],
+    y: pos[1],
     show: false,
     frame: false,
     webPreferences: {
@@ -46,6 +55,11 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null
     iconAlwaysOnTop.close()
+  })
+
+  mainWindow.on('move', () => {
+    pos = mainWindow.getPosition();
+    storage.set('mainWindow', { pos });
   })
 
   // Secondary window options - Icon AlwaysOnTop
