@@ -4,7 +4,7 @@ import WindowStateKeeper from 'electron-window-state'
 import { autoUpdater } from 'electron-updater'
 import IsDev from 'electron-is-dev'
 import { exec } from "child_process"
-const storage = require('electron-json-storage-sync');
+const storage = require('electron-json-storage-sync')
 var request = require("request")
 
 /**
@@ -26,7 +26,7 @@ function createWindow() {
     console.log(data);
     pos = data.data['pos'];
   }
-  
+  //4.94
   mainWindow = new BrowserWindow({
     height: 588,
     minHeight: 588,
@@ -121,14 +121,11 @@ app.on('activate', () => {
 // NODE AUTO LAUNCH
 
 if (!IsDev) {
-  const APP_PATH = 'C:/Users/NathanW16/Desktop/zygo-pdv-electron/dist/electron/zygo-pdv-win32-x64/zygo-pdv.exe'
-
   var electronAutoLaunch = new AutoLaunch({
-    name: 'ZygoPdv',
-    path: APP_PATH.replace(/\//g, '\\'),
+    name: 'ZygoPdv'
   })
   
-  ipcMain.on('setStartWithSystem', (event, arg) => arg ? electronAutoLaunch.enable() : electronAutoLaunch.disable())
+  electronAutoLaunch.enable()
 }
 
 
