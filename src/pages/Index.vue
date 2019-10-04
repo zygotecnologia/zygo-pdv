@@ -17,16 +17,6 @@
             <q-item-section>
               <q-btn
                 dense
-                color="primary"
-                @click="confirmReset = true"
-                label="Restaurar configurações iniciais"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item>
-            <q-item-section>
-              <q-btn
-                dense
                 color="negative"
                 @click="confirmClose = true"
                 label="Encerrar aplicação"
@@ -59,15 +49,6 @@
         <q-card-actions align="right">
           <q-btn flat label="Cancelar" color="primary" v-close-popup />
           <q-btn flat label="OK" color="primary" v-close-popup @click="mainWin.close()" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <q-dialog v-model="resetConfirmation" persistent>
-      <q-card>
-        <q-card-section class="row items-center">Configurações iniciais restauradas.</q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat label="OK" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
