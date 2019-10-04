@@ -27,22 +27,6 @@
       </q-menu>
     </q-btn>
 
-    <q-dialog v-model="confirmReset" persistent>
-      <q-card>
-        <q-card-section class="row items-center">Deseja restaurar todas as configurações?</q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat label="Cancelar" color="primary" v-close-popup />
-          <q-btn
-            flat
-            label="OK"
-            color="primary"
-            v-close-popup
-            @click="resetSettings(), resetConfirmation = true"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
     <q-dialog v-model="confirmClose" persistent>
       <q-card>
         <q-card-section class="row items-center">Deseja encerrar a aplicação?</q-card-section>
