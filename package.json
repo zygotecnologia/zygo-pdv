@@ -1,6 +1,6 @@
 {
   "name": "zygo-pdv",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A Quasar Framework app",
   "productName": "zygo-pdv",
   "cordovaId": "org.cordova.quasar.app",
