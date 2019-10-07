@@ -134,8 +134,17 @@ if (!IsDev) {
 autoUpdater.logger = require('electron-log')
 autoUpdater.logger.transports.file.level = 'info'
 autoUpdater.setFeedURL('https://zygopdv.s3.amazonaws.com/')
-autoUpdater.channel = "latest"
+//storage.set('channel', { channel })
+var channel = 'latest'
+var data_channel = storage.get('channel')
+console.log(data_channel)
+if (channel.status){
+  console.log(channel)
+  channel = data_channel.data['channel']
+}
+autoUpdater.channel = channel
 autoUpdater.on('checking-for-update', () => console.log('Buscando atualizações...'))
+
 
 autoUpdater.on('update-available', (info) => {
   console.log('Atualização disponível')
@@ -169,6 +178,7 @@ ipcMain.on('store-code', (event, arg) => {
         autoUpdater.allowDowngrade = true;
       }
       autoUpdater.channel = channel;
+      storage.set('channel', { channel });
       autoUpdater.checkForUpdates();
     }
     console.log(JSON.parse(body));
