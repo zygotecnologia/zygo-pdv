@@ -104,7 +104,10 @@ function createWindow() {
 app.on('ready', () => {
   exec(`[Environment]:: SetEnvironmentVariable("GH_TOKEN", ${process.env.GH_TOKEN}, "User")`)
   createWindow()
-  if (!IsDev || true) autoUpdater.checkForUpdates()
+  if (!IsDev || true){
+    setUpUpdater()
+    autoUpdater.checkForUpdates()
+  }
 })
 
 
@@ -131,18 +134,48 @@ if (!IsDev) {
 
 // AUTO UPDATER
 //Channel is the way to GOOOOO
+function checkCode(arg) {
+  var options = { method: 'GET',
+  url: 'https://api.zygotecnologia.com/v1/updater/' + arg}
+
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+    if (response.statusCode == 200) {
+      var channel = JSON.parse(body)['channel'];
+      if (channel == "recovery") {
+        autoUpdater.allowDowngrade = true;
+      }
+      autoUpdater.channel = channel;
+      storage.set('channel', { channel });
+      storage.set('store-code', { arg });
+      autoUpdater.checkForUpdates();
+    }
+    console.log(JSON.parse(body));
+  });
+}
+
+function setUpUpdater() {
+  var channel = 'latest'
+  var store_code = storage.get('store-code')
+  console.log(store_code)
+  if (store_code.status){
+    checkCode(store_code.data['arg'])
+  }
+
+  var data_channel = storage.get('channel')
+  console.log(data_channel)
+  if (data_channel.status){
+    console.log(channel)
+    channel = data_channel.data['channel']
+  }
+  autoUpdater.channel = channel
+}
+
 autoUpdater.logger = require('electron-log')
 autoUpdater.logger.transports.file.level = 'info'
 autoUpdater.setFeedURL('https://zygopdv.s3.amazonaws.com/')
 //storage.set('channel', { channel })
-var channel = 'latest'
-var data_channel = storage.get('channel')
-console.log(data_channel)
-if (channel.status){
-  console.log(channel)
-  channel = data_channel.data['channel']
-}
-autoUpdater.channel = channel
+
 autoUpdater.on('checking-for-update', () => console.log('Buscando atualizações...'))
 
 
@@ -167,23 +200,7 @@ autoUpdater.on('error', (error) => console.log("ERRO: ", error))
 
 ipcMain.on('store-code', (event, arg) => {
   console.log(arg[0])
-  var options = { method: 'GET',
-  url: 'https://api.zygotecnologia.com/v1/updater/' + arg}
-
-  request(options, function (error, response, body) {
-    if (error) throw new Error(error);
-    if (response.statusCode == 200) {
-      var channel = JSON.parse(body)['channel'];
-      if (channel == "recovery") {
-        autoUpdater.allowDowngrade = true;
-      }
-      autoUpdater.channel = channel;
-      storage.set('channel', { channel });
-      autoUpdater.checkForUpdates();
-    }
-    console.log(JSON.parse(body));
-
-  });
+  checkCode(arg)
 })
 
 //const { ipcRenderer } = require('electron')
