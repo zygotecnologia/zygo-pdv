@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <webview ref="zygoPdv" id="main-window" src="https://pdv.zygotecnologia.com/?embed=electron" partition="persist:electron" nodeintegration />
+    <webview ref="zygoPdv" id="main-window" src="https://pdv.zygotecnologia.com/?embed=electron" partition="persist:zygo" nodeintegration />
     <q-btn dense icon="more_vert" flat class="bt-settings absolute-top-right">
       <q-menu style="min-width: 300px" transition-show="jump-down" transition-hide="jump-up">
         <q-list style="min-width: 300px">
